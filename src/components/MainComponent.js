@@ -17,7 +17,7 @@ const mapStateToProps = state => {
     rooms: state.rooms,
     equipment: state.equipment,
     apartments: state.apartments,
-    users: state.users,
+    users: state.user,
     apartmentType: state.apartmentType,
     roomType: state.roomType,
     equipmentType: state.equipmentType,

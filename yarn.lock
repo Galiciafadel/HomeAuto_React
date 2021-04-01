@@ -9499,6 +9499,13 @@ react-slider@^1.1.4:
   resolved "https://registry.yarnpkg.com/react-slider/-/react-slider-1.1.4.tgz#08b55f9be3e04cc10ae00cc3aedb6891dffe9bf3"
   integrity sha512-lL/MvzFcDue0ztdJItwLqas2lOy8Gg46eCDGJc4cJGldThmBHcHfGQePgBgyY1SEN95OwsWAakd3SuI8RyixDQ==
 
+react-switch@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/react-switch/-/react-switch-6.0.0.tgz#bd4a2dea08f211b8a32e55e8314fd44bc1ec947e"
+  integrity sha512-QV3/6eRK5/5epdQzIqvDAHRoGLbCv/wDpHUi6yBMXY1Xco5XGuIZxvB49PHoV1v/SpEgOCJLD/Zo43iic+aEIw==
+  dependencies:
+    prop-types "^15.7.2"
+
 react-transition-group@^2.2.1:
   version "2.9.0"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-2.9.0.tgz#df9cdb025796211151a436c69a8f3b97b5b07c8d"
