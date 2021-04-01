@@ -1,5 +1,5 @@
 import * as ActionTypes from './ActionTypes';
-import { baseUrl } from '../shared/baseUrl';
+import { baseUrl} from '../shared/baseUrl';
 
 
 
@@ -41,10 +41,12 @@ export const fetchApartments = () => (dispatch) => {
 
     dispatch(apartmentsLoading(true));
 
-    return fetch(baseUrl + 'Apartments')
+    return fetch(baseUrl + 'apartments')
     .then(response => {
         if (response.ok) {
+          console.log(response);
           return response;
+          
         } else {
           var error = new Error('Error ' + response.status + ': ' + response.statusText);
           error.response = response;
@@ -60,6 +62,11 @@ export const fetchApartments = () => (dispatch) => {
     .catch(error => dispatch(ApartmentsFailed(error.message)));
 }
 
+export const deleteApartment = (apartmentId) => (dispatch) => {
+  dispatch(removeApartment(apartmentId));
+
+}
+
 export const apartmentsLoading = () => ({
     type: ActionTypes.APARTMENTS_LOADING
 });
@@ -72,6 +79,12 @@ export const ApartmentsFailed = (errmess) => ({
 export const addApartments = (apartments) => ({
     type: ActionTypes.ADD_APARTMENTS,
     payload: apartments
+});
+
+// delete apartment
+export const removeApartment = (apartmentId) => ({
+  type: ActionTypes.DELETE_APARTMENT,
+  payload: apartmentId
 });
 
 export const fetchRooms = () => (dispatch) => {    
@@ -111,7 +124,7 @@ export const fetchUsers = () => (dispatch) => {
     
     dispatch(usersLoading());
 
-    return fetch(baseUrl + 'Users')
+    return fetch(baseUrl + 'users')
     .then(response => {
         if (response.ok) {
           return response;
@@ -231,7 +244,7 @@ export const fetchApartmentType = () => (dispatch) => {
     
   dispatch(ApartmentTypeLoading());
 
-  return fetch(baseUrl + 'ApartmentType')
+  return fetch(baseUrl + 'apartmentType')
   .then(response => {
       if (response.ok) {
         return response;
@@ -303,6 +316,3 @@ export const addroomType = (roomType) => ({
   type: ActionTypes.ADD_ROOMTYPE,
   payload: roomType
 });
-
-
-

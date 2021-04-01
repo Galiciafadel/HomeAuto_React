@@ -9,7 +9,9 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import login from '../services/logInService'
+import login from '../services/logInService';
+import AdminComponent from './AdminComponent';
+import { Redirect, withRouter } from 'react-router';
 
 function Copyright() {
   return (
@@ -23,6 +25,7 @@ function Copyright() {
     </Typography>
   );
 }
+
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -56,8 +59,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const LogIn = () => {
+const LogIn = ({history}) => {
 
+  // console.log(history);
   const classes = useStyles();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -70,7 +74,7 @@ const LogIn = () => {
     setPassword(e.target.value)
   }
 
-  const click = () => {
+  const LogIn = () => {
     let credentials = {
       'username': username,
       'password': password
@@ -79,9 +83,11 @@ const LogIn = () => {
     login(credentials);
     
     let isAdmin = localStorage.getItem('isAdmin') === 'true' ? true : false 
-    
     if(isAdmin){
-      
+      history.push('/admin');
+    }
+    else{
+      history.push('/usersApartment');
     }
     
   }
@@ -94,7 +100,7 @@ const LogIn = () => {
         <Typography component="h1" variant="h5" className={classes.customText}>
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form}>
           <TextField
             className={classes.customInput}
             variant="outlined"
@@ -128,9 +134,9 @@ const LogIn = () => {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={click}
+            onClick={LogIn}
           >
-            Sign In
+            Log In
           </Button>
         </form>
       </div>
@@ -141,4 +147,4 @@ const LogIn = () => {
   );
 }
 
-export default LogIn;
+export default withRouter(LogIn);

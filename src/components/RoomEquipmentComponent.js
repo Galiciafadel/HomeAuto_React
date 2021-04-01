@@ -1,56 +1,34 @@
-/* eslint-disable react/jsx-pascal-case */
-import React, { Component } from "react";
-import { Card, CardImg, CardBody,CardText, Button, Modal, ModalHeader, ModalBody,
-    Label, Row, Col, CardTitle, Breadcrumb, BreadcrumbItem } from "reactstrap";
-import { Control, LocalForm, Errors } from 'react-redux-form';
-import { Link } from 'react-router-dom';
+import React from "react";
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
+import MySwitch from './Switch';
+ 
 
-/*function RenderRoomEquipment({roomequipment}) {
+function RenderRoomEquipment ({equipment}) {
     return (
-      <Card>
-        <CardImg top src={baseUrl + roomequipment.image} alt={roomequipment.name} />
-        <CardBody>
-          <CardTitle>{room.name}</CardTitle>
-          <CardText>{dish.description}</CardText>
-        </CardBody>
-      </Card>
-    )
-  }*/
-
-  function RenderEquipment({equipment, postEquipment, roomId}) {
-    const equip = equipment.map(equipment => {
-        return (
-            <li key={equipment.id}>
-                <p>{equipment.equipment}</p>
-                <p>{equipment.goal}</p>
-                <p>{equipment.turnedOn}</p>
-                <p>{equipment.actual}</p>
-                
-            </li>
-        )
-    });
-    if (equipment == null) {
-        return <div></div>
-    }
-    return (
+    
         <div>
-            <h3>Equipment</h3>
-            <ul className="list-unstyled">
-                {equip}
-            </ul>
-            
+        <img className="imageclass" src={baseUrl + equipment.image} alt={equipment.name} />
+        <h3 className="Labelclass">{equipment.name}</h3>
+        <MySwitch/>
+        
+        
         </div>
+        
     );
 }
 
-const RoomEquipmentDetail = (props) => {
-    const room = props.room
+const EquipmentList = (props) => {
 
-    console.log(room);
-    
-    if (props.isLoading) {
+    const menu = props.equipment.equipment.map((equip) => {
+        return (
+            <div className="col-12 col-md-5 m-1"  key={equip.id}>
+                <RenderRoomEquipment equipment={equip} />
+            </div>
+        );
+    });
+
+    if (props.equipment.isLoading) {
         return(
             <div className="container">
                 <div className="row">            
@@ -59,142 +37,34 @@ const RoomEquipmentDetail = (props) => {
             </div>
         );
     }
-    else if (props.errMess) {
+    else if (props.equipment.errMess) {
         return(
             <div className="container">
-                <div className="row">            
-                    <h4>{props.errMess}</h4>
+                <div className="row"> 
+                    <div className="col-12">
+                        <h4>{props.equipment.errMess}</h4>
+                    </div>
                 </div>
             </div>
         );
     }
-    else if (props.room != null) {
+    else {
         return (
             <div className="container">
-            <div className="row">
-                <Breadcrumb>
-    
-                    <BreadcrumbItem><Link to={`/apartments/${room.id}`}>Back</Link></BreadcrumbItem>
-                    <BreadcrumbItem active>{props.room.name}</BreadcrumbItem>
-                </Breadcrumb>
-                <div className="col-12">
-                    <h3>{props.room.name}</h3>
-                    <hr />
-                </div>                
-            </div>
-            <div className="row">
-                <div className="col-12 col-md-5 m-1">
-                <RenderEquipment equipment={props.equipment}
-                    postEquipment={props.postEquipment}
-                    roomId={props.room.id}
-                />
+                <div className="row">
+                    <div className="col-12">
+                        <h1 className="slider">Equipment</h1>
+                        <hr />
+                    </div>                
                 </div>
-            </div>
+                <div className="row">
+                    {menu}
+                </div>
             </div>
         );
     }
 }
 
-const required = (val) => val && val.length;
-const maxLength = (len) => (val) => !(val) || (val.length < len);
-const minLength = (len) => (val) => val && (val.length >= len);
 
-/*class CommentForm extends Component {
-    constructor(props) {
-        super(props);
 
-        this.state = {
-            isModelOpen: false
-        }
-
-        this.toggleModal = this.toggleModal.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    toggleModal() {
-        this.setState({
-            isModelOpen: !this.state.isModelOpen
-        });
-    }
-
-    handleSubmit(values) {
-        this.toggleModal();
-        this.props.postEquipment(this.props.dishId, values.rating, values.author, values.comment);
-        console.log('Current state is: ' + JSON.stringify(values));
-    }
-
-    render() {
-        return(
-            <div>
-                <Button outline onClick={this.toggleModal}>
-                    <span className="fa fa-edit fa-lg"></span> Submit Comment
-                </Button>
-
-                <Modal isOpen={this.state.isModelOpen} toggle={this.toggleModal}>
-                    <ModalHeader toggle={this.toggleModal}>Submit Comment</ModalHeader>
-                    <ModalBody>
-                        <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
-                            <Row className="form-group">
-                                <Label for="rating" md={12}>rating</Label>
-                                <Col md={12}>
-                                    <Control.select model=".rating" name="rating" className="form-control">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </Control.select>
-                                </Col>
-                            </Row>
-                            <Row className="form-group">
-                                <Label htmlFor="author" md={12}>Your Name</Label>
-                                <Col md={12}>
-                                <Control.text model=".author" id="author" name="author" 
-                                    placeholder="Author" 
-                                    className="form-control" 
-                                    validators={{
-                                        required,
-                                        minLength: minLength(3),
-                                        maxLength: maxLength(15)
-                                    }} 
-                                />
-                                <Errors className="text-danger" model=".author" show="touched"
-                                    messages={{
-                                        required: 'Required',
-                                        minLength: 'Should have more than 3 Characters',
-                                        maxLength: 'Should have 15 or less Characters'
-                                    }}
-                                />
-                                </Col>
-                            </Row>
-                            <Row className="form-group">
-                                <Label htmlFor="feedback" md={12}>Your feedback</Label>
-                                <Col md={12}>
-                                <Control.text model=".comment" id="comment" name="comment" 
-                                    resize="none"
-                                    rows="12" 
-                                    className="form-control" 
-                                    validators={{
-                                        required,
-                                        minLength: minLength(1)
-                                    }} 
-                                />
-                                <Errors className="text-danger" model=".comment" show="touched"
-                                    messages={{
-                                        required: 'Required',
-                                        minLength: 'Should not be empty!'
-                                    }}
-                                />
-                                </Col>
-                            </Row>
-                            <Button type="submit" value="submit" color="primary">Submit</Button>                            
-                        </LocalForm>
-                    </ModalBody>
-                </Modal>
-            </div>
-
-        )
-    }
-}*/
-
-export default RoomEquipmentDetail;
+export default EquipmentList;

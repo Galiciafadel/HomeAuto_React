@@ -10,11 +10,12 @@ function RenderRooms({rooms}) {
     const rms = rooms.map((room) => { 
         return (
             <Card>
-                <Link to={`/rooms/${room.id}`} ></Link>
-                    <CardImg width="100%" src={baseUrl + room.image} alt={room.name} />
-                    <CardImgOverlay>
-                        <CardTitle>{room.name}</CardTitle>
-                    </CardImgOverlay>
+            <Link to={`/equipment`} >
+                <CardImg width="100%" src={baseUrl + room.image} alt={room.name} />
+                <CardImgOverlay>
+                    <CardTitle>{room.name}</CardTitle>
+                </CardImgOverlay>
+            </Link>
             </Card>
         );        
     })
@@ -22,64 +23,15 @@ function RenderRooms({rooms}) {
     if (rooms == null) {
         return <div></div>
     }
+    else
     return (
         <div>
-            <h3>Rooms</h3>
-                {rms}
-            <h>SAY HI</h>
+            <h3 className="slider">Rooms</h3>
+                {rms}    
         </div>
     );
 }
 
-/*const RoomList = (props) => {
-
-    const roomList = props.rooms.rooms.map((room) => {
-        console.log(room)
-        return (
-            
-            <div className="col-12 col-md-5 m-1"  key={room.id}>
-                <RenderRoomsItem room={room} roomTypeId={room.RoomTypeId} />
-            </div>
-        );
-    });
-
-    if (props.rooms.isLoading) {
-        return(
-            <div className="container">
-                <div className="row">            
-                    <Loading />
-                </div>
-            </div>
-        );
-    }
-    else if (props.rooms.errMess) {
-        return(
-            <div className="container">
-                <div className="row"> 
-                    <div className="col-12">
-                        <h4>{props.rooms.errMess}</h4>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-    else {
-        return (
-            <div className="container">
-                <div className="row">
-                    
-                    <div className="col-12">
-                        <h3>RoomList</h3>
-                        <hr/>
-                    </div>                
-                </div>
-                <div className="row">
-                    {roomList}
-                </div>
-            </div>
-        );
-    }
-}*/
 const RoomList = (props) => {
     const apartment = props.apartment
 
@@ -106,12 +58,12 @@ const RoomList = (props) => {
     else if (props.apartment != null) {
         return (
             <div className="container">
-            <div className="row">
+            {/* <div className="row">
                 <div className="col-12">
                     <h3>{props.apartment.name}</h3>
                     <hr />
                 </div>                
-            </div>
+            </div> */}
             <div className="row">
                 <div className="col-12 col-md-5 m-1">
                 <RenderRooms rooms={props.rooms}

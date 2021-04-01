@@ -1,14 +1,11 @@
-import React, { useState } from "react";
-import Avatar from '@material-ui/core/Avatar';
+import React from "react";
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
-import Box from '@material-ui/core/Box';
 // import LockOutlinedIcon from '@material-ui/icons/LockOutlinedIcon';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { NavLink } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -35,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     color: '#ffffff',
   },
   customContainer: {
-    backgroundColor: '#141313'
+    backgroundColor: '#141313',
   },
   customText: {
     color: 'white'
@@ -48,31 +45,32 @@ const useStyles = makeStyles((theme) => ({
 
 const Admin = () => {
 
+  
   const classes = useStyles();
   
   return (
-    <Container component="main" maxWidth="xs" className={classes.customContainer}>
+    <Container component="main" className={classes.customContainer}>
       <CssBaseline />
       <div className={classes.paper}>
         <Typography component="h1" variant="h5" className={classes.customText}>
           Admin
         </Typography>
-          <Button
+        <NavLink exact to="/admin/apartments"  style={{width: 300}}><Button
             className={classes.customButton}
             fullWidth
             variant="contained"
             color="primary"
           >
             View Apartments
-          </Button>
-          <Button
+          </Button></NavLink>
+          <NavLink exact to="/users" style={{width: 300}}><Button
             className={classes.customButton}
             fullWidth
             variant="contained"
             color="primary"
           >
             View Users
-          </Button>
+          </Button></NavLink>
       </div>
     </Container>
   );

@@ -1,14 +1,17 @@
 import React from 'react';
-import { Card, CardImg, CardImgOverlay,
-    CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import { Card, CardImg, CardImgOverlay,CardTitle} from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Loading } from './LoadingComponent';
-import { baseUrl } from '../shared/baseUrl';
+import { baseUrl} from '../shared/baseUrl';
+
 
 function RenderApartmentsItem ({apartment}) {
+    //let apartmentType= props.apartmentType.imagePath.filter((apartmentType)=>apartmentType._id === apartment.apartmentTypeId)[0]
     return (
+        
         <Card>
-            <Link to={`/apartments/${apartment.id}`} >
+            <Link to={`/apartments/${apartment._id}`}>
+            
                 <CardImg width="100%" src={baseUrl + apartment.image} alt={apartment.name} />
                 <CardImgOverlay>
                     <CardTitle>{apartment.name}</CardTitle>
@@ -21,7 +24,7 @@ function RenderApartmentsItem ({apartment}) {
 const ApartmentList = (props) => {
     const apartmentList = props.apartments.apartments.map((apartment) => {
         return (
-            <div className="col-12 col-md-5 m-1"  key={apartment.id}>
+            <div className="col-12 col-md-5 m-1"  key={apartment._id}>
                 <RenderApartmentsItem apartment={apartment} />
             </div>
         );
@@ -52,10 +55,7 @@ const ApartmentList = (props) => {
         return (
             <div className="container">
                 <div className="row">
-                    <Breadcrumb>
-                        <BreadcrumbItem><Link to={`/apartments`}>Apartments</Link></BreadcrumbItem>
-                        <BreadcrumbItem active>ApartmentList</BreadcrumbItem>
-                    </Breadcrumb>
+
                     <div className="col-12">
                         <h3>ApartmentList</h3>
                         <hr/>

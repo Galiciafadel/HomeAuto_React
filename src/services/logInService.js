@@ -1,9 +1,10 @@
 import axios from 'axios'
+import { baseUrl } from '../shared/baseUrl';
 
 
 
 const login = (credentials) => {
-    axios.post('http://localhost:3000/users/login', credentials)    
+    axios.post(baseUrl+'/users/login', credentials)    
     .then(res => {
         const data = res.data;
         if(!data.success){
