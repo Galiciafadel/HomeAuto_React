@@ -39,7 +39,7 @@ export const postroom = (RoomTypeId, name, equipement) => (dispatch) => {
 
 export const fetchApartments = () => (dispatch) => {
 
-    dispatch(apartmentsLoading(true));
+    dispatch(apartmentsLoading());
 
     return fetch(baseUrl + 'apartments')
     .then(response => {
@@ -87,8 +87,18 @@ export const removeApartment = (apartmentId) => ({
   payload: apartmentId
 });
 
-export const fetchRooms = () => (dispatch) => {    
-    return fetch(baseUrl + 'rooms')
+export const fetchRooms = (apartmentId) => (dispatch) => {    
+    return fetch(baseUrl + 'apartments/'+ apartmentId
+    ,{
+      method: "GET",
+      body: JSON.stringify({"_id": apartmentId}),
+      headers:
+      {
+          "Content-Type": "application/json",
+      },
+      credentials:"same-origin"
+   }
+    )
     .then(response => {
         if (response.ok) {
           return response;
@@ -116,6 +126,10 @@ export const addroom = (rooms) => ({
 export const roomsFailed = (errmess) => ({
     type: ActionTypes.ROOMS_FAILED,
     payload: errmess
+});
+
+export const roomsLoading = () => ({
+  type: ActionTypes.ROOMS_LOADING
 });
 
 
@@ -164,7 +178,7 @@ export const fetchEquipment = () => (dispatch) => {
     
   dispatch(equipmentLoading());
 
-  return fetch(baseUrl + 'Equipments')
+  return fetch(baseUrl + 'equipment')
   .then(response => {
       if (response.ok) {
         return response;
@@ -316,3 +330,42 @@ export const addroomType = (roomType) => ({
   type: ActionTypes.ADD_ROOMTYPE,
   payload: roomType
 });
+
+export const updatEquipment = (equipment) => ({
+  type: ActionTypes.UPDATE_EQUIPMENT,
+  payload: equipment
+});
+
+export const putEquipment = (equipmentId, turnedOn) => (dispatch) => {
+
+  const updatedEquipment = {
+      equipement: equipmentId,
+      turnedOn: turnedOn
+  }
+  console.log('Equipment ', updatedEquipment);
+
+  return fetch(baseUrl + 'equipment', {
+      method: 'PUT',
+      body: JSON.stringify(updatedEquipment),
+      headers: {
+          'Content-Type': 'application/json'
+      },
+  })
+  .then(response => {
+      if (response.ok) {
+          return response;
+      }
+      else {
+          var error = new Error('Error ' + response.status + ': ' + response.statusText);
+          error.response = response;
+          throw error;
+      }
+  },
+  error => {
+      var errmess = new Error(error.message);
+      throw errmess;
+  })
+  .then(response => response.json())
+  .catch(error => { console.log('Put equipment ', error.message);
+      alert('Your equipment could not be updated\nError: '+ error.message); })
+}

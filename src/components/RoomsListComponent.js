@@ -1,42 +1,60 @@
 import React from 'react';
-import { Card, CardImg, CardImgOverlay,
-    CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import { Card, CardImg, CardImgOverlay, CardTitle } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
 
 
 function RenderRooms({rooms}) {
-    const rms = rooms.map((room) => { 
+    if (rooms!=null)
         return (
-            <Card>
-            <Link to={`/equipment`} >
-                <CardImg width="100%" src={baseUrl + room.image} alt={room.name} />
-                <CardImgOverlay>
-                    <CardTitle>{room.name}</CardTitle>
-                </CardImgOverlay>
-            </Link>
-            </Card>
-        );        
-    })
-
-    if (rooms == null) {
-        return <div></div>
-    }
-    else
-    return (
-        <div>
-            <h3 className="slider">Rooms</h3>
-                {rms}    
+            <div className="slider">
+                
+                <div>
+            {rooms.map((room)=>{
+                
+                return (
+                   <p className="slider"> Byeee222</p> ,
+                <div key={room._id}>
+                    <Card>
+                    <Link to={`/equipment`} >
+                        <CardImg width="100%" src={baseUrl + room.roomTypeId.imagePath} alt={room.name} />
+                        <CardImgOverlay>
+                            <CardTitle>{room.name}</CardTitle>
+                        </CardImgOverlay>
+                    </Link>
+                    </Card>
+                
+                </div>
+                )
+            })}
+            </div>
         </div>
-    );
+            
+        ); 
+
+    else {
+        return <div>HELLOOO</div>;
+    }       
 }
 
-const RoomList = (props) => {
-    const apartment = props.apartment
 
-    console.log(apartment);
-    
+// function RenderRooms({rooms}) {
+//         return (
+//             <Card>
+//                 <Link to={`/equipment/`}>
+                
+//                     <CardImg width="100%" src={baseUrl + rooms.rooms[1].roomTypeId.imagePath} alt={rooms.name} />
+//                     <CardImgOverlay>
+//                         <CardTitle>{rooms.rooms[1].name}</CardTitle>
+//                     </CardImgOverlay>
+//                 </Link>
+//             </Card>
+//         );
+//     }
+
+const RoomList = (props) => {
+
     if (props.isLoading) {
         return(
             <div className="container">
@@ -46,33 +64,35 @@ const RoomList = (props) => {
             </div>
         );
     }
-    else if (props.errMess) {
+    else
+    if (props.errMess) {
         return(
             <div className="container">
-                <div className="row">            
-                    <h4>{props.errMess}</h4>
+                <div className="row"> 
+                    <div className="col-12">
+                        <h4>{props.rooms.errMess}</h4>
+                    </div>
                 </div>
             </div>
         );
     }
-    else if (props.apartment != null) {
+    else {
         return (
             <div className="container">
-            {/* <div className="row">
-                <div className="col-12">
-                    <h3>{props.apartment.name}</h3>
-                    <hr />
-                </div>                
-            </div> */}
-            <div className="row">
-                <div className="col-12 col-md-5 m-1">
-                <RenderRooms rooms={props.rooms}
-                />
+                <div className="row">
+ 
+                    <div className="col-12">
+                        <h3 className="slider">Rooms List</h3>
+                        <hr/>
+                    </div>                
                 </div>
-            </div>
+                <div className="row">
+                    <RenderRooms rooms={props.rooms}></RenderRooms>
+        
+                </div>
             </div>
         );
     }
 }
-
+ 
 export default RoomList;

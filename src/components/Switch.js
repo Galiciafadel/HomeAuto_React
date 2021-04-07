@@ -1,5 +1,5 @@
-import React, {Component, useState} from 'react';
-import {render} from 'react-dom';
+import React, {Component,/* useState*/} from 'react';
+//import {render} from 'react-dom';
 import Switch from 'react-switch';
 import {makeStyles,Typography, Slider} from '@material-ui/core';
 
@@ -55,27 +55,18 @@ class MySwitch extends Component {
 
   
   render() {
-    
     return (
         <div>
-            
             <Switch
                 className="react-switch"
                 onChange={this.handleChange}
                 checked={this.state.checked}
             />
             <p className="Labelclass">the {this.name} is <b>{this.state.checked ? 'on' : 'off'}</b> !</p>
-            
               <MySlider/>
-            
-            
-   
-    
-
         </div>
     );
   }
- 
 }
  
 export default MySwitch;

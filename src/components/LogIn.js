@@ -10,8 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import login from '../services/logInService';
-import AdminComponent from './AdminComponent';
-import { Redirect, withRouter } from 'react-router';
+import { withRouter } from 'react-router';
 
 function Copyright() {
   return (

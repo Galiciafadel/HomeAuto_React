@@ -1,8 +1,10 @@
 import * as ActionTypes from './ActionTypes';
 
-export const Apartments = (state = { isLoading: true,
+export const Apartments = (state = {
+    isLoading: true,
     errMess: null,
-    apartments:[]}, action) => {
+    apartments:[]
+}, action) => {
     switch (action.type) {
         case ActionTypes.ADD_APARTMENTS:
             return {...state, isLoading: false, errMess: null, apartments: action.payload};
@@ -11,7 +13,7 @@ export const Apartments = (state = { isLoading: true,
             return {...state, isLoading: true, errMess: null, apartments: []}
 
         case ActionTypes.APARTMENTS_FAILED:
-            return {...state, isLoading: false, errMess: action.payload};
+            return {...state, isLoading: false, errMess: action.payload,apartments:[]};
 
         case ActionTypes.DELETE_APARTMENT:
             return {...state, isLoading: false, errMess: null, apartments: state.apartments.filter(apartment => apartment._id === action.payload)};

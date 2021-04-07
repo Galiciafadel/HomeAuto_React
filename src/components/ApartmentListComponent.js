@@ -6,13 +6,11 @@ import { baseUrl} from '../shared/baseUrl';
 
 
 function RenderApartmentsItem ({apartment}) {
-    //let apartmentType= props.apartmentType.imagePath.filter((apartmentType)=>apartmentType._id === apartment.apartmentTypeId)[0]
     return (
-        
         <Card>
             <Link to={`/apartments/${apartment._id}`}>
             
-                <CardImg width="100%" src={baseUrl + apartment.image} alt={apartment.name} />
+                <CardImg width="100%" src={baseUrl + apartment.apartmentTypeId.imagePath} alt={apartment.name} />
                 <CardImgOverlay>
                     <CardTitle>{apartment.name}</CardTitle>
                 </CardImgOverlay>

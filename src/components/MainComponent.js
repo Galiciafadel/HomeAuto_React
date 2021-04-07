@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import RoomList from './RoomsListComponent';
 import EquipmentList from './RoomEquipmentComponent';
-import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
+import { Switch, Route, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { fetchRooms, fetchEquipment, fetchApartments, fetchApartmentType,fetchEquipmentType,fetchUsers,fetchRoomType } from '../redux/ActionCreators';
 import ApartmentList from './ApartmentListComponent';
@@ -28,9 +28,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   /*postEquipment: (roomId, actual, turned) => dispatch(postEquipment(roomId, actual, turned)),*/
-  fetchRooms: () => { dispatch(fetchRooms())},
-  fetchEquipment: () => {dispatch(fetchEquipment())},
   fetchApartments: () => {dispatch(fetchApartments())},
+  fetchRooms: (apartmentId) => { dispatch(fetchRooms(apartmentId))},
+  fetchEquipment: () => {dispatch(fetchEquipment())},
   fetchUsers: () => {dispatch(fetchUsers())},
   fetchApartmentType: () => {dispatch(fetchApartmentType())}
 });
@@ -51,11 +51,11 @@ class Main extends Component {
 
     const ApartmentWithId = ({match}) => {
       return(
-          <RoomList apartment={this.props.apartments.apartments.filter((apartment) => apartment.id === parseInt(match.params.apartmentId,10))[0]}
+          <RoomList rooms={this.props.rooms.rooms.rooms}//.filter((room) => room.apartment ===  match.params.apartmentId) }
           isLoading={this.props.apartments.isLoading}
           errMess={this.props.apartments.errMess}
-          rooms={this.props.rooms.rooms.filter((room) => room.apartmentId ===  parseInt(match.params.apartmentId,10)) }
-          roomErrMess={this.props.rooms.errMess}
+          
+          roomsErrMess={this.props.rooms.errMess}
 
         />
       );
