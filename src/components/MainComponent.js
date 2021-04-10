@@ -3,20 +3,21 @@ import RoomList from './RoomsListComponent';
 import EquipmentList from './RoomEquipmentComponent';
 import { Switch, Route, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux';
-import { fetchRooms, fetchEquipment, fetchApartments, fetchApartmentType,fetchEquipmentType,fetchUsers,fetchRoomType } from '../redux/ActionCreators';
+import { fetchRooms, fetchEquipment, fetchApartments, fetchApartmentType,fetchEquipmentType,fetchUsers,fetchRoomType, putEquipment } from '../redux/ActionCreators';
 import ApartmentList from './ApartmentListComponent';
 import ApartmentsList from './ApartmentsList';
 import LogIn from './LogIn';
 import Admin from './AdminComponent';
 import UsersList from './UsersList';
 import UsersApartment from './UsersApartments';
+import RoomEquipmentList from './EquipmentListComponent';
 
 
 const mapStateToProps = state => {
   return {
+    apartments: state.apartments,
     rooms: state.rooms,
     equipment: state.equipment,
-    apartments: state.apartments,
     users: state.user,
     apartmentType: state.apartmentType,
     roomType: state.roomType,
@@ -27,20 +28,20 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  /*postEquipment: (roomId, actual, turned) => dispatch(postEquipment(roomId, actual, turned)),*/
   fetchApartments: () => {dispatch(fetchApartments())},
-  fetchRooms: (apartmentId) => { dispatch(fetchRooms(apartmentId))},
+  fetchRooms: () => { dispatch(fetchRooms())},
   fetchEquipment: () => {dispatch(fetchEquipment())},
   fetchUsers: () => {dispatch(fetchUsers())},
-  fetchApartmentType: () => {dispatch(fetchApartmentType())}
+  fetchApartmentType: () => {dispatch(fetchApartmentType())},
+  putEquipment:(equipmentId,turnedOn,goal)=>dispatch(putEquipment(equipmentId,turnedOn,goal))
 });
 
 class Main extends Component {
 
   componentDidMount() {
+    this.props.fetchApartments();
     this.props.fetchRooms();
     this.props.fetchEquipment();
-    this.props.fetchApartments();
     this.props.fetchUsers();
     this.props.fetchApartmentType();
 
@@ -51,11 +52,16 @@ class Main extends Component {
 
     const ApartmentWithId = ({match}) => {
       return(
-          <RoomList rooms={this.props.rooms.rooms.rooms}//.filter((room) => room.apartment ===  match.params.apartmentId) }
+          <RoomList apartment={this.props.apartments.apartments.filter((apartment) => apartment._id === match.params.apartmentId)[0]}
           isLoading={this.props.apartments.isLoading}
           errMess={this.props.apartments.errMess}
-          
+
+          rooms={this.props.rooms.rooms.filter((room) => room.apartment === match.params.apartmentId)}
           roomsErrMess={this.props.rooms.errMess}
+
+          // isLoading={this.props.apartments.isLoading}
+          // errMess={this.props.apartments.errMess}
+          
 
         />
       );
@@ -63,12 +69,13 @@ class Main extends Component {
 
    const RoomWithId = ({match}) => {
       return(
-          <EquipmentList room={this.props.rooms.rooms.filter((room) => room.id === parseInt(match.params.roomId,10))[0]}
+          <RoomEquipmentList room={this.props.rooms.rooms.filter((room) => room._id === match.params.roomId)[0]}
           isLoading={this.props.rooms.isLoading}
           errMess={this.props.rooms.errMess}
-          equipment={this.props.equipment.equipment.filter((equipment) => equipment.roomId === parseInt(match.params.roomId,10))}
-          equipmentErrMess={this.props.equipment.errMess}
-          
+
+          equipment={this.props.equipment.equipment.filter((equipement) => equipement.room === match.params.roomId)}
+          //equipmentErrMess={this.props.equipement.errMess}
+
         />
       );
     };
@@ -104,15 +111,16 @@ class Main extends Component {
         
         <div>
           <Switch> 
-          <Route exact path="/login" component={() => <LogIn></LogIn>}></Route> 
+            <Route exact path="/login" component={() => <LogIn></LogIn>}></Route> 
             <Route exact path="/" component={() => <LogIn></LogIn>}></Route>
             <Route exact path="/admin" component={() => <Admin></Admin>}></Route>
             <Route exact path='/apartments/:apartmentId' component={ApartmentWithId}/>
             <Route exact path='/apartments' component={()=> <ApartmentList apartments={this.props.apartments} ></ApartmentList>}></Route>
             <Route exact path="/admin/apartments" component={() => <ApartmentsList data={this.props.apartments.apartments}></ApartmentsList>}></Route>
             <Route exact path='/rooms/:roomId' component={RoomWithId}/>
-            <Route exact path='/equipment' component={()=> <EquipmentList equipment={this.props.equipment}/>}/>
-            <Route exact path="/users" component={() => <UsersList data={this.props.users.users} apartments={this.props.apartments.apartments}></UsersList>}></Route>
+            <Route exact path='/equipment' component={() => <RoomEquipmentList equipment={this.props.equipment.equipment}></RoomEquipmentList>}></Route>
+            <Route exact path='/equipment/:equipmentId' component={()=> <EquipmentList equipment={this.props.equipment.equipment}/>}/>
+            <Route exact path='/users' component={() => <UsersList data={this.props.users.users} apartments={this.props.apartments.apartments}></UsersList>}></Route>
             <Route exact path='/usersApartment' component={()=> <UsersApartment  apartments={this.props.apartments.apartments} apartmentType={this.props.apartmentType.apartmentType}/>}/>
           </Switch>
         </div>
@@ -123,3 +131,4 @@ class Main extends Component {
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));
+//            <Route exact path='/equipment' component={()=> <EquipmentList equipment={this.props.equipment}/>}/>

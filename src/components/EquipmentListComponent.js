@@ -1,43 +1,32 @@
 import React from 'react';
-
+import { Card, CardImg, CardImgOverlay,CardTitle} from 'reactstrap';
+import { Link } from 'react-router-dom';
 import { Loading } from './LoadingComponent';
-import { baseUrl } from '../shared/baseUrl';
-
+import { baseUrl} from '../shared/baseUrl';
 
 
 function RenderEquipmentItem ({equipment}) {
-    
-
     return (
-        <div>
-        <img className="photoEquip" src={baseUrl+equipment.image} alt={equipment.name} />
-        <h3 className="Equiptitle">{equipment.name}</h3>
-
-     
-        </div>           
-               
-      
+        <Card>
+            <Link to={`/equipment/${equipment._id}`}>
+            
+                <CardImg width="100%" src={baseUrl + equipment.equipmentTypeId.imagePath} alt={equipment.name} />
+                <CardImgOverlay>
+                    <CardTitle>{equipment.name}</CardTitle>
+                </CardImgOverlay>
+            </Link>
+        </Card>
     );
 }
-/*   <Slider
-            defaultValue={20}
-            getAriaValueText={valuetext}
-            aria-labelledby="discrete-slider-custom"
-            step={5}
-            valueLabelDisplay="auto"
-            marks={true}
-        />*/
 
-const EquipmentList = (props) => {
-
-    const equipList = props.equipment.equipment.map((equip) => {
-        
+const RoomEquipmentList = (props) => {
+    const equipmentList = props.equipment.map((equipment) => {
         return (
-            
-            <div className="col-12 col-md-5 m-1"  key={equip.id}>
-                <RenderEquipmentItem equipment={equip} equipmentTypeId={equip.equipmentTypeId} />
+            <div className="col-12 col-md-5 m-1"  key={equipment._id}>
+                <RenderEquipmentItem equipment={equipment} />
             </div>
         );
+        
     });
 
     if (props.equipment.isLoading) {
@@ -64,18 +53,18 @@ const EquipmentList = (props) => {
         return (
             <div className="container">
                 <div className="row">
-                    
+
                     <div className="col-12">
-                        <h3>EquipmentList</h3>
+                        <h3>Equipment List</h3>
                         <hr/>
                     </div>                
                 </div>
                 <div className="row">
-                    {equipList}
+                    {equipmentList}
                 </div>
             </div>
         );
     }
 }
 
-export default EquipmentList;
+export default RoomEquipmentList;

@@ -32,7 +32,7 @@ export const postroom = (RoomTypeId, name, equipement) => (dispatch) => {
             throw error;
       })
     .then(response => response.json())
-    .then(response => dispatch(addroom(response)))
+    .then(response => dispatch(addrooms(response)))
     .catch(error =>  { console.log('post Rooms', error.message); alert('Your room could not be posted\nError: '+error.message); });
 };
 
@@ -87,22 +87,15 @@ export const removeApartment = (apartmentId) => ({
   payload: apartmentId
 });
 
-export const fetchRooms = (apartmentId) => (dispatch) => {    
-    return fetch(baseUrl + 'apartments/'+ apartmentId
-    ,{
-      method: "GET",
-      body: JSON.stringify({"_id": apartmentId}),
-      headers:
-      {
-          "Content-Type": "application/json",
-      },
-      credentials:"same-origin"
-   }
-    )
+export const fetchRooms = () => (dispatch) => { 
+  dispatch(roomsLoading());   
+    return fetch(baseUrl + `rooms`)
+    
     .then(response => {
         if (response.ok) {
           return response;
-        } else {
+        } 
+        else {
           var error = new Error('Error ' + response.status + ': ' + response.statusText);
           error.response = response;
           throw error;
@@ -113,11 +106,11 @@ export const fetchRooms = (apartmentId) => (dispatch) => {
             throw errmess;
       })
     .then(response => response.json())
-    .then(rooms => dispatch(addroom(rooms)))
+    .then(rooms => dispatch(addrooms(rooms)))
     .catch(error => dispatch(roomsFailed(error.message)));
 }
 
-export const addroom = (rooms) => ({
+export const addrooms = (rooms) => ({
   type: ActionTypes.ADD_ROOMS,
   payload: rooms
 });
@@ -331,25 +324,28 @@ export const addroomType = (roomType) => ({
   payload: roomType
 });
 
-export const updatEquipment = (equipment) => ({
+export const updateEquipment = (equipment) => ({
   type: ActionTypes.UPDATE_EQUIPMENT,
   payload: equipment
 });
 
-export const putEquipment = (equipmentId, turnedOn) => (dispatch) => {
+export const putEquipment = (equipmentId, turnedOn,goal) => (dispatch) => {
 
   const updatedEquipment = {
       equipement: equipmentId,
-      turnedOn: turnedOn
+      turnedOn: turnedOn,
+      goal:goal
   }
   console.log('Equipment ', updatedEquipment);
 
-  return fetch(baseUrl + 'equipment', {
+  return fetch(baseUrl + 'equipment/' + equipmentId, {
       method: 'PUT',
       body: JSON.stringify(updatedEquipment),
       headers: {
           'Content-Type': 'application/json'
       },
+      credentials: 'same-origin'
+
   })
   .then(response => {
       if (response.ok) {
@@ -366,6 +362,8 @@ export const putEquipment = (equipmentId, turnedOn) => (dispatch) => {
       throw errmess;
   })
   .then(response => response.json())
+  .then(response => dispatch(updateEquipment(response)))
+
   .catch(error => { console.log('Put equipment ', error.message);
       alert('Your equipment could not be updated\nError: '+ error.message); })
 }

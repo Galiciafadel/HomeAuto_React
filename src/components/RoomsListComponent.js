@@ -17,7 +17,7 @@ function RenderRooms({rooms}) {
                    <p className="slider"> Byeee222</p> ,
                 <div key={room._id}>
                     <Card>
-                    <Link to={`/equipment`} >
+                    <Link to={`/rooms/${room._id}`} >
                         <CardImg width="100%" src={baseUrl + room.roomTypeId.imagePath} alt={room.name} />
                         <CardImgOverlay>
                             <CardTitle>{room.name}</CardTitle>

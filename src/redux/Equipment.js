@@ -8,10 +8,13 @@ export const Equipment = (state = { isLoading: true,
             return {...state, isLoading: false, errMess: null, equipment: action.payload};
 
         case ActionTypes.EQUIPMENT_LOADING:
-            return {...state, isLoading: true, errMess: null, equipment: []}
+            return {...state, isLoading: true, errMess: null, equipment: []};
 
         case ActionTypes.EQUIPMENT_FAILED:
             return {...state, isLoading: false, errMess: action.payload};
+
+        case ActionTypes.UPDATE_EQUIPMENT:
+            return {...state, isLoading: false, errMess: null, equipment: action.payload};
 
         default:
             return state;
