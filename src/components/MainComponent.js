@@ -78,8 +78,21 @@ class Main extends Component {
 
         />
       );
+   };
+      const EquipmentWithId = ({match}) => {
+        return(
+            <EquipmentList equipment={this.props.equipment.equipment.filter((equipment) => equipment._id === match.params.equipmentId)}
+            isLoading={this.props.equipment.isLoading}
+            errMess={this.props.equipment.errMess}
+            putEquipment={this.props.putEquipment}
+  
+            //equipment={this.props.equipment.equipment.filter((equipement) => equipement.room === match.params.roomId)}
+            //equipmentErrMess={this.props.equipement.errMess}
+  
+          />
+        );
     };
-
+  
       // const ApartmentRooms = ({match}) => {
       //   return(
       //       <ApartmentList room={this.props.rooms.rooms.filter((room) => room.id === parseInt(match.params.roomId,10))[0]}
@@ -119,7 +132,7 @@ class Main extends Component {
             <Route exact path="/admin/apartments" component={() => <ApartmentsList data={this.props.apartments.apartments}></ApartmentsList>}></Route>
             <Route exact path='/rooms/:roomId' component={RoomWithId}/>
             <Route exact path='/equipment' component={() => <RoomEquipmentList equipment={this.props.equipment.equipment}></RoomEquipmentList>}></Route>
-            <Route exact path='/equipment/:equipmentId' component={()=> <EquipmentList equipment={this.props.equipment.equipment}/>}/>
+            <Route exact path='/equipment/:equipmentId' component={EquipmentWithId}/>
             <Route exact path='/users' component={() => <UsersList data={this.props.users.users} apartments={this.props.apartments.apartments}></UsersList>}></Route>
             <Route exact path='/usersApartment' component={()=> <UsersApartment  apartments={this.props.apartments.apartments} apartmentType={this.props.apartmentType.apartmentType}/>}/>
           </Switch>

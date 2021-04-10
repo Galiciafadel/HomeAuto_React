@@ -12,7 +12,7 @@ const useStyles= makeStyles({
     }
   })
 
-  function MySlider () {
+function MySlider () {
 
     const classes=useStyles()
     const [value,setValue]=React.useState(0)
@@ -22,9 +22,9 @@ const useStyles= makeStyles({
     return(
       <div className={classes.roo}>
       <div style={{width:200,margin:20}}>
-                <Slider
+            <Slider
                 min={0}
-                max={50}
+                max={10}
                 value={value}
                 onChange={handleSliderChange}
                 />
@@ -32,66 +32,78 @@ const useStyles= makeStyles({
                 </div>
                 </div>
     );
-  }
+}
   
   
    
-  class MySwitch extends Component {
+class EquipmentForm extends Component {
     constructor(props) {
       super(props);
-      this.state = ({
-        checked: false,
-        value: 0
-      })
-      this.checked=this.turnOn.bind(this);
-      
-      //this.turnedOn=this.turnOn.bind(this);
+
+      this.turnOn=this.turnOn.bind(this);
+      //this.handleSliderChange = this.handleSliderChange(this);
+
+      this.state = {
+        turnedOn: {turnedOn:false},
+        goal: 0
+      };
+
     }
-    turnOn(data){
-        this.setState({checked:data});
-        this.props.putEquipment(this.props.equipmentId, data,0)
-    }
-  
-    handleSliderChange=(value)=>{
-      alert(value);
-      this.props.putEquipment(this.props.equipmentId, false,value)
+    turnOn(){
+        this.setState({
+            turnedOn: !this.state.turnedOn
+        });
+        this.props.putEquipment(this.props.equipmentId, this.state.turnedOn,this.state.goal)
 
     }
   
+    // handleSliderChange(value){
+    //   alert(value);
+    //   this.props.putEquipment(this.props.equipmentId, false,value)
+
+    // }
     
     render() {
-      return (
-          <div>
-              <Switch
-                  className="react-switch"
-                  onChange={(data)=>this.turnOn(data)}
-                  checked={this.state.checked}
-              />
-              <p className="Labelclass">the {this.name} is <b>{this.state.checked ? 'on' : 'off'}</b> !</p>
-                <MySlider/>
-          </div>
-      );
+        return (
+            <div > {//key={equipment._id}>
+            }
+                <Switch className="react-switch" onChange={this.turnOn}/>
+                <p className="Labelclass">The equipment is <b>{this.state.turnedOn ? 'on' : 'off'}</b> !</p>
+                    {//<MySlider/>}
     }
-  }
-
-function RenderRoomEquipment ({equipment,putEquipment}) {
-    return (
-    
-        <div>
-       {// <img className="imageclass" src={baseUrl + equipment.equipmentTypeId.imagePath} alt={equipment.name} />}
+            </div>
+        );
+    }
 }
-        <h3 className="Labelclass">{equipment.name}</h3>
-        <MySwitch equipment={equipment} putEquipment={putEquipment}></MySwitch>
-        
-        
-        </div>
-        
-    );
+
+function RenderRoomEquipment ({equipment,equipmentId,putEquipment}) {
+    
+
+    if (equipment != null)
+    return (
+        <div className="slider">
+            
+            <div>
+                {equipment.map((equipment)=>{
+                    return (
+                        <div key={equipment._id}>
+                            <h3 className="Labelclass">{equipment.equipmentTypeId.name}</h3>
+                            <img className="imageclass" src={baseUrl + equipment.equipmentTypeId.imagePath} alt={equipment.equipmentTypeId.name} />
+                            <EquipmentForm equipmentId={equipmentId} putEquipment={putEquipment}></EquipmentForm >
+                        
+                        
+                        </div>
+                    );
+                })}
+            </div>
+    </div>
+
+    ); 
 }
 
 const EquipmentList = (props) => {
 
-    if (props.equipment.isLoading) {
+    if (props.isLoading) {
         return(
             <div className="container">
                 <div className="row">            
@@ -121,7 +133,7 @@ const EquipmentList = (props) => {
                     </div>                
                 </div>
                 <div className="col-12 col-md-5 m-1"  key={props.equipment._id}>
-                <RenderRoomEquipment equipment={props.equipment} />
+                <RenderRoomEquipment equipment={props.equipment} equipmentId={props.equipment._id} putEquipment={props.putEquipment}/>
                 </div>
             </div>
         );

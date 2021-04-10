@@ -332,7 +332,7 @@ export const updateEquipment = (equipment) => ({
 export const putEquipment = (equipmentId, turnedOn,goal) => (dispatch) => {
 
   const updatedEquipment = {
-      equipement: equipmentId,
+      _id: equipmentId,
       turnedOn: turnedOn,
       goal:goal
   }
@@ -342,7 +342,8 @@ export const putEquipment = (equipmentId, turnedOn,goal) => (dispatch) => {
       method: 'PUT',
       body: JSON.stringify(updatedEquipment),
       headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          
       },
       credentials: 'same-origin'
 
